@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import sklearn.preprocessing
+from sklearn.model_selection import train_test_split
 
 def get_run_length(df):
     '''
@@ -59,7 +60,25 @@ def create_dummies(df, object_cols):
     # via column (axis=1)
     df = pd.concat([df, dummy_df], axis=1)
 
+    df.drop(columns={'Show Type', 'Production Type' }, inplace = True)
+
     return df
+
+def get_revival_dummies(df):
+    '''
+    This function takes in the broadway dataframe
+    and creates a dummy column called is is_revival
+    from the Revival column and then drops the Revival column.
+    '''
+    #Create the dummy dataframe
+    dummy_df = pd.get_dummies(df['Revival'], drop_first=True)
+
+    #Concat back to the original dataframe
+    df = pd.concat([df, dummy_df], axis=1)
+
+    return df
+
+
 
 
 def prep_bway(df):
@@ -80,21 +99,65 @@ def prep_bway(df):
     index_locality = df[df['Theatre Address Locality'] != 'New York'].index
     df.drop(index_locality, inplace = True)
 
+    #Drop Observations where Show Never Opened
+    index_opened = df[df['Show Not Opened'] == True].index
+    df.drop(index_opened, inplace = True)
+
     #Drop coulumns with too many nulls or that are not necessary
     df.drop(columns={'Previews Date', 'Intermissions', 'N Performances', 
     'Run Time', 'Other Titles', 'Official Website', 'Theatre Postal Code',
     'Theatre Year Closed', 'Theatre Year Demolished', 'Theatre Address Locality',
     'Theatre Full Address', 'Theatre Street Address', 'Theatre Address Region', 'Theatre Name', 
-    'Show Title'}, inplace=True)
-
+    'Show Title', 'Show Not Opened', 'Show Type (Simple)'}, inplace=True)
 
     #drop any observations with remaining nulls
     df.dropna(inplace=True)
 
     #Use get_run_length function to calculate run length
-    df = get_run_length(df)
+    get_run_length(df)
+
+    #Create Dummie for if the show is a revival or not
+    df = get_revival_dummies(df)
+
+    #rename the is_revival column
+    df.rename(columns={True: 'is_revival'}, inplace=True)
+
+    df.drop(columns={'Revival'}, inplace=True)
 
     #Get dummies for object columns
     df = create_dummies(df, get_object_cols(df))
 
+    #drop opening and closing date columns
+    df.drop(columns={'Opening Date', 'Closing Date'}, inplace=True)
+
     return df
+
+def split(df, target_var):
+    '''
+    This function takes in the dataframe and target variable name as arguments and then
+    splits the dataframe into train (56%), validate (24%), & test (20%)
+    It will return a list containing the following dataframes: train (for exploration), 
+    X_train, X_validate, X_test, y_train, y_validate, y_test
+    '''
+    # split df into train_validate (80%) and test (20%)
+    train_validate, test = train_test_split(df, test_size=.20, random_state=13)
+    # split train_validate into train(70% of 80% = 56%) and validate (30% of 80% = 24%)
+    train, validate = train_test_split(train_validate, test_size=.3, random_state=13)
+
+    # create X_train by dropping the target variable 
+    X_train = train.drop(columns=[target_var])
+    # create y_train by keeping only the target variable.
+    y_train = train[[target_var]]
+
+    # create X_validate by dropping the target variable 
+    X_validate = validate.drop(columns=[target_var])
+    # create y_validate by keeping only the target variable.
+    y_validate = validate[[target_var]]
+
+    # create X_test by dropping the target variable 
+    X_test = test.drop(columns=[target_var])
+    # create y_test by keeping only the target variable.
+    y_test = test[[target_var]]
+
+    partitions = [train, X_train, X_validate, X_test, y_train, y_validate, y_test]
+    return partitions

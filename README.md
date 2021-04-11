@@ -4,7 +4,7 @@
 
 ## Project Overview:
 Can I build a predictive model that imporves upon the baseline accuracy model for predicting how long a show on Broadway will run?
-To answer this question, I will acquire, prepare, and explore data from Open Broadway Data to identify those feaures of braodway shows that drive the the target, length of run. 
+To answer this question, I will acquire, prepare, and explore data to identify those feaures of braodway shows that drive the the target, length of run. 
 
 ## Table of Contents
 

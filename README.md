@@ -4,7 +4,17 @@
 
 ## Project Overview:
 Can I build a predictive model that imporves upon the baseline accuracy model for predicting how long a show on Broadway will run?
-To answer this question, I will acquire, prepare, and explore data to identify those feaures of braodway shows that drive the the target, length of run. 
+To answer this question, I will acquire, prepare, and explore data to identify those feaures of broadway shows that drive the the target, length of run.
+
+
+## Project Summary:
+Using broadway data containing information on every production from 1736 to 2020,
+I built a Generalized Linear Model to better predict how long a show
+will be on Broadway (number of days). 
+This was accomplished by using features selected with statistical testing and clustering 
+which showed that show genre, number of creatives involved in the show, number of performers,
+and audience capacity are drivers for how long a show will run. 
+The GLM model reduced error in the number of days a show would run by outperforming the baseline mean model by 46%.
 
 
 ## Initial Questions
@@ -76,5 +86,9 @@ To answer this question, I will acquire, prepare, and explore data to identify t
     - explore.py
     - evaluate.py
 4. Open Final_Report in this repo and run all cells
+
+
+## My Project Trello Board for Insight into my Process
+https://trello.com/b/n4xMAJI1/broadwayshowsfadetoblack
 
 

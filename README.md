@@ -1,4 +1,4 @@
-# Fade to Black: Predicting How Long a Show Will Run On Broadway
+<img src="./readme_header.png">
 
 
 

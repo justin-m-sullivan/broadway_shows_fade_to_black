@@ -35,7 +35,7 @@ def explore_univariate_categorical(train, cat_var):
     '''
     frequency_table = freq_table(train, cat_var)
     plt.figure(figsize=(2,2))
-    sns.barplot(x=cat_var, y='Count', data=frequency_table, color='lightseagreen')
+    sns.barplot(x=cat_var, y='Count', data=frequency_table, color='purple')
     plt.title(cat_var)
     plt.show()
     print(frequency_table)
@@ -49,7 +49,7 @@ def explore_univariate_quant(train, quant_var):
     plt.figure(figsize=(8,2))
 
     p = plt.subplot(1, 2, 1)
-    p = plt.hist(train[quant_var], color='lightseagreen')
+    p = plt.hist(train[quant_var], color='purple')
     p = plt.title(quant_var)
 
     # second plot: box plot
@@ -128,7 +128,7 @@ def run_chi2(train, binary, categorical_target):
 
 def plot_cat_by_target(train, categorical_target, binary):
     p = plt.figure(figsize=(2,2))
-    p = sns.barplot(categorical_target, binary, data=train, alpha=.8, color='lightseagreen')
+    p = sns.barplot(categorical_target, binary, data=train, alpha=.8, color='purple')
     overall_rate = train[binary].mean()
     p = plt.axhline(overall_rate, ls='--', color='gray')
     return p
@@ -175,7 +175,7 @@ def plot_swarm(train, categorical_target, quant):
 
 def plot_boxen(train, categorical_target, quant):
     average = train[quant].mean()
-    p = sns.boxenplot(data=train, x=categorical_target, y=quant, color='lightseagreen')
+    p = sns.boxenplot(data=train, x=categorical_target, y=quant, color='purple')
     p = plt.title(quant)
     p = plt.axhline(average, ls='--', color='black')
     return p

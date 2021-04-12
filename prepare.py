@@ -1,7 +1,29 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 import sklearn.preprocessing
 from sklearn.model_selection import train_test_split
+
+def visualize_nulls(df):
+    '''
+    This function takes in a dataframe and returns
+    a horizontal bar chart where each bar is a column in the dataframe
+    and the bar represents the number of null values in that column
+    '''
+    missing_df = df.isnull().sum(axis=0).reset_index()
+    missing_df.columns = ['column_name', 'missing_count']
+    missing_df = missing_df[missing_df['missing_count']>0]
+    missing_df = missing_df.sort_values(by='missing_count')
+    
+    ind = np.arange(missing_df.shape[0])
+    width = 0.9
+    fig, ax = plt.subplots(figsize=(12,18))
+    rects = ax.barh(ind, missing_df.missing_count.values, color='purple')
+    ax.set_yticks(ind)
+    ax.set_yticklabels(missing_df.column_name.values, rotation='horizontal')
+    ax.set_xlabel("Count of missing values")
+    ax.set_title("Number of missing values in each column")
+    plt.show()
 
 def get_run_length(df):
     '''
